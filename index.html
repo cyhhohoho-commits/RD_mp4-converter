@@ -15,39 +15,63 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;}
 .card{background:var(--card);border-radius:16px;box-shadow:0 4px 24px rgba(26,111,212,.10),0 1px 4px rgba(0,0,0,.06);width:100%;max-width:520px;overflow:hidden;}
+
+/* 상단 헤더 */
 .top-bar{background:var(--blue);padding:22px 32px 20px;display:flex;align-items:center;gap:14px;}
-.top-icon{width:42px;height:42px;background:rgba(255,255,255,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.top-icon{width:42px;height:42px;background:rgba(255,255,255,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.top-icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .top-bar h1{color:#fff;font-size:18px;font-weight:700;line-height:1.2;}
 .top-bar p{color:rgba(255,255,255,.75);font-size:12px;margin-top:2px;font-weight:300;}
+
 .body{padding:28px 32px 32px;}
+
+/* 스펙 칩 */
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
-.chip{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-line);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;}
+.chip{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-line);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;}
+
 .sec-lbl{font-size:12px;font-weight:700;color:var(--text-mid);margin-bottom:8px;}
+
+/* GIF 상태 */
 .gif-row{display:flex;align-items:center;gap:8px;background:var(--blue-bg);border:1px solid var(--blue-line);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--text-mid);}
 .gif-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 2px rgba(40,162,100,.2);}
 .gif-dot.warn{background:#e88a2a;box-shadow:0 0 0 2px rgba(232,138,42,.2);}
 .gif-fname{font-weight:700;color:var(--text);}
 .gif-st{margin-left:auto;font-size:11px;}
+
+/* GIF 수동 업로드 */
 .gif-manual{display:none;background:#fff8f0;border:1px solid #f5c98a;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:12px;}
 .gif-manual.show{display:block;}
 .gif-manual p{color:#8a5200;margin-bottom:10px;font-weight:500;}
 .gif-manual label{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;}
 .gif-manual label:hover{background:var(--blue-lt);}
 .gif-manual input{display:none;}
+
+/* 드롭존 */
 .drop-zone{border:2px dashed var(--border);border-radius:10px;padding:32px 16px;text-align:center;cursor:pointer;position:relative;transition:all .2s;margin-bottom:14px;background:var(--bg);}
 .drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .drop-zone:hover,.drop-zone.over{border-color:var(--blue);background:var(--blue-bg);}
 .drop-zone.has-file{border-color:var(--green);border-style:solid;background:#f0faf5;}
-.drop-icon{font-size:30px;margin-bottom:8px;display:block;}
+.drop-icon{display:flex;align-items:center;justify-content:center;margin:0 auto 10px;width:44px;height:44px;background:var(--blue-bg);border-radius:50%;}
+.drop-icon svg{width:22px;height:22px;fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.drop-zone.has-file .drop-icon{background:#e0f5ec;}
+.drop-zone.has-file .drop-icon svg{stroke:var(--green);}
 .drop-zone h3{font-size:13px;font-weight:600;margin-bottom:4px;}
 .drop-zone p{font-size:11px;color:var(--text-dim);}
+
+/* 파일 정보 바 */
 .file-bar{display:none;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:18px;font-size:12px;}
 .file-bar.show{display:flex;}
+.file-bar svg{width:16px;height:16px;fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
 .fbn{flex:1;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .fbs{color:var(--text-dim);white-space:nowrap;}
-.btn-main{width:100%;padding:14px;background:var(--blue);border:none;border-radius:10px;color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:14px;}
+
+/* 변환 버튼 */
+.btn-main{width:100%;padding:14px;background:var(--blue);border:none;border-radius:10px;color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-main svg{width:16px;height:16px;fill:#fff;}
 .btn-main:hover:not(:disabled){background:var(--blue-lt);transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,111,212,.3);}
 .btn-main:disabled{background:#b0c8e8;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* 진행 상태 */
 .prog-wrap{display:none;margin-bottom:14px;}
 .prog-wrap.show{display:block;}
 .prog-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;}
@@ -58,13 +82,20 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .prog-fill.running{background:linear-gradient(90deg,var(--blue) 0%,#6ab0ff 50%,var(--blue) 100%);background-size:200% 100%;animation:shimmer 1.4s linear infinite;}
 @keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
 .prog-log{font-size:11px;color:var(--text-dim);min-height:14px;}
-.btn-dl{display:none;width:100%;padding:14px;background:transparent;border:2px solid var(--green);border-radius:10px;color:var(--green);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;margin-bottom:14px;transition:all .2s;}
+
+/* 다운로드 버튼 */
+.btn-dl{display:none;width:100%;padding:14px;background:transparent;border:2px solid var(--green);border-radius:10px;color:var(--green);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;margin-bottom:14px;transition:all .2s;display:none;align-items:center;justify-content:center;gap:8px;}
+.btn-dl svg{width:16px;height:16px;fill:none;stroke:var(--green);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 .btn-dl:hover{background:var(--green);color:#fff;}
-.btn-dl.show{display:block;}
+.btn-dl:hover svg{stroke:#fff;}
+.btn-dl.show{display:flex;}
+
+/* 상태 메시지 */
 .status{display:none;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:500;text-align:center;}
 .status.show{display:block;}
 .status.ok{background:#edfaf4;color:var(--green);border:1px solid #a8dfca;}
 .status.err{background:#fdf0f0;color:var(--red);border:1px solid #f0b8b8;}
+
 .compat{display:none;background:#fff8e6;border:1px solid #ffd280;border-radius:8px;padding:12px 14px;font-size:12px;color:#7a5500;margin-bottom:16px;}
 .compat.show{display:block;}
 .footer{margin-top:20px;text-align:center;font-size:11px;color:var(--text-dim);}
@@ -73,20 +104,26 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 <body>
 <div class="card">
   <div class="top-bar">
-    <div class="top-icon">??</div>
+    <div class="top-icon">
+      <!-- 음표 아이콘 -->
+      <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </div>
     <div>
       <h1>Audio → MP4 변환기</h1>
       <p>MP3 / WAV를 풀HD 동영상으로 · 브라우저 로컬 처리</p>
     </div>
   </div>
+
   <div class="body">
     <div class="compat" id="compat">? <strong>Chrome 또는 Edge 브라우저를 사용해 주세요.</strong> 현재 브라우저는 지원되지 않습니다.</div>
+
     <div class="chips">
-      <span class="chip">?? 1920×1080</span>
-      <span class="chip">?? H.264</span>
-      <span class="chip">?? AAC 192kbps</span>
-      <span class="chip">?? 서버 업로드 없음</span>
+      <span class="chip">1920×1080</span>
+      <span class="chip">H.264</span>
+      <span class="chip">AAC 192kbps</span>
+      <span class="chip">서버 업로드 없음</span>
     </div>
+
     <div class="sec-lbl">배경 이미지</div>
     <div class="gif-row">
       <div class="gif-dot" id="gifDot"></div>
@@ -94,22 +131,33 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
       <span class="gif-st" id="gifSt">확인 중...</span>
     </div>
     <div class="gif-manual" id="gifManual">
-      <p>? 배경 이미지 파일을 찾을 수 없습니다. 직접 업로드해 주세요.</p>
-      <label><input type="file" id="gifInput" accept=".gif,image/gif"> ?? GIF 파일 선택</label>
+      <p>배경 이미지 파일을 찾을 수 없습니다. 직접 업로드해 주세요.</p>
+      <label><input type="file" id="gifInput" accept=".gif,image/gif"> GIF 파일 선택</label>
     </div>
+
     <div class="sec-lbl">오디오 파일</div>
     <div class="drop-zone" id="dropZone">
       <input type="file" id="audioInput" accept=".mp3,.wav,audio/mpeg,audio/wav">
-      <span class="drop-icon" id="dropIcon">??</span>
+      <div class="drop-icon" id="dropIconWrap">
+        <!-- 업로드 아이콘 -->
+        <svg id="dropIconSvg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
       <h3 id="dropTitle">MP3 또는 WAV 파일을 선택하거나 드래그하세요</h3>
       <p id="dropSub">지원 형식: .mp3 · .wav</p>
     </div>
+
     <div class="file-bar" id="fileBar">
-      <span>??</span>
+      <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       <span class="fbn" id="fbName">?</span>
       <span class="fbs" id="fbSize">?</span>
     </div>
-    <button class="btn-main" id="btnConvert" disabled>▶ MP4 변환 시작</button>
+
+    <button class="btn-main" id="btnConvert" disabled>
+      <!-- 재생 아이콘 -->
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      MP4 변환 시작
+    </button>
+
     <div class="prog-wrap" id="progWrap">
       <div class="prog-head">
         <span class="prog-lbl" id="progLbl">처리 중...</span>
@@ -118,7 +166,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
       <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
       <div class="prog-log" id="progLog"></div>
     </div>
-    <a class="btn-dl" id="btnDl" href="#" download="output.mp4">? MP4 다운로드</a>
+
+    <a class="btn-dl" id="btnDl" href="#" download="output.mp4">
+      <!-- 다운로드 아이콘 -->
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      MP4 다운로드
+    </a>
+
     <div class="status" id="statusMsg"></div>
   </div>
 </div>
@@ -131,13 +185,13 @@ if(typeof VideoEncoder==='undefined') document.getElementById('compat').classLis
 const $=id=>document.getElementById(id);
 const gifDot=$('gifDot'),gifSt=$('gifSt'),gifManual=$('gifManual'),gifInput=$('gifInput');
 const dropZone=$('dropZone'),audioInput=$('audioInput');
-const dropIcon=$('dropIcon'),dropTitle=$('dropTitle'),dropSub=$('dropSub');
+const dropIconWrap=$('dropIconWrap'),dropTitle=$('dropTitle'),dropSub=$('dropSub');
 const fileBar=$('fileBar'),fbName=$('fbName'),fbSize=$('fbSize');
 const btnConvert=$('btnConvert'),progWrap=$('progWrap');
 const progLbl=$('progLbl'),progPct=$('progPct'),progFill=$('progFill'),progLog=$('progLog');
 const btnDl=$('btnDl'),statusMsg=$('statusMsg');
 
-let audioFile=null, gifBlob=null, outUrl=null;
+let audioFile=null,gifBlob=null,outUrl=null;
 
 const fmt=b=>b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB';
 const setStatus=(m,t)=>{statusMsg.textContent=m;statusMsg.className='status show '+t;};
@@ -157,7 +211,7 @@ const updateBtn=()=>{btnConvert.disabled=!(audioFile&&gifBlob&&typeof VideoEncod
     if(!res.ok) throw 0;
     gifBlob=await res.blob();
     gifDot.className='gif-dot';
-    gifSt.textContent='? 자동 로드 완료';gifSt.style.color='var(--green)';
+    gifSt.textContent='자동 로드 완료';gifSt.style.color='var(--green)';
   }catch{
     gifDot.className='gif-dot warn';
     gifSt.textContent='파일 없음 ? 수동 업로드 필요';
@@ -169,7 +223,7 @@ const updateBtn=()=>{btnConvert.disabled=!(audioFile&&gifBlob&&typeof VideoEncod
 gifInput.addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;
   gifBlob=f;gifDot.className='gif-dot';
-  gifSt.textContent='? '+f.name;gifSt.style.color='var(--green)';
+  gifSt.textContent=f.name+' 로드됨';gifSt.style.color='var(--green)';
   gifManual.classList.remove('show');updateBtn();
 });
 
@@ -181,288 +235,254 @@ dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remov
 function setAudio(f){
   if(!/\.(mp3|wav)$/i.test(f.name)){setStatus('MP3 또는 WAV 파일만 지원합니다.','err');return;}
   audioFile=f;
-  dropIcon.textContent='?';dropTitle.textContent=f.name;dropSub.textContent=fmt(f.size);
+  // 아이콘을 체크 SVG로 교체
+  dropIconWrap.innerHTML=`<svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:none;stroke:var(--green);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>`;
+  dropTitle.textContent=f.name;dropSub.textContent=fmt(f.size);
   dropZone.classList.add('has-file');
   fbName.textContent=f.name;fbSize.textContent=fmt(f.size);
   fileBar.classList.add('show');clearStatus();btnDl.classList.remove('show');updateBtn();
 }
 
-// ???????????????????????????????????????????????????????
-// GIF 프레임 추출
-// 핵심 수정: delay=0 이면 브라우저 기본값 100ms 적용
-// ???????????????????????????????????????????????????????
-async function extractGifFrames(blob) {
-  const buf  = await blob.arrayBuffer();
-  const data = new Uint8Array(buf);
-  let pos = 6;
+// ???????????????????????????????????????????????
+// 순수 JS GIF 파서
+// ???????????????????????????????????????????????
+async function extractGifFrames(blob){
+  const buf=await blob.arrayBuffer();
+  const data=new Uint8Array(buf);
+  let pos=6;
 
-  const W   = data[pos]|(data[pos+1]<<8); pos+=2;
-  const H   = data[pos]|(data[pos+1]<<8); pos+=2;
-  const pk  = data[pos]; pos+=1;
-  const hasGCT = (pk>>7)&1;
-  pos += 2; // bg, aspect
-  const gctSize = hasGCT ? 3*(2<<(pk&7)) : 0;
-  const globalCT = hasGCT ? data.slice(pos, pos+gctSize) : null;
-  if(hasGCT) pos += gctSize;
+  const W=data[pos]|(data[pos+1]<<8);pos+=2;
+  const H=data[pos]|(data[pos+1]<<8);pos+=2;
+  const pk=data[pos];pos+=1;
+  const hasGCT=(pk>>7)&1;
+  pos+=2;
+  const gctSize=hasGCT?3*(2<<(pk&7)):0;
+  const globalCT=hasGCT?data.slice(pos,pos+gctSize):null;
+  if(hasGCT)pos+=gctSize;
 
-  // 캔버스
-  const cv  = document.createElement('canvas'); cv.width=W; cv.height=H;
-  const ctx = cv.getContext('2d');
-  const pv  = document.createElement('canvas'); pv.width=W; pv.height=H;
-  const pctx= pv.getContext('2d');
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  const pv=document.createElement('canvas');pv.width=W;pv.height=H;
+  const pctx=pv.getContext('2d');
 
-  const frames = [];
-  let gce = null;
+  const frames=[];
+  let gce=null;
 
-  function r8()  { return data[pos++]; }
-  function r16() { const v=data[pos]|(data[pos+1]<<8); pos+=2; return v; }
+  function r8(){return data[pos++];}
+  function r16(){const v=data[pos]|(data[pos+1]<<8);pos+=2;return v;}
 
-  while(pos < data.length) {
-    const block = r8();
-    if(block === 0x3B) break;
+  while(pos<data.length){
+    const block=r8();
+    if(block===0x3B)break;
 
-    if(block === 0x21) {
-      const label = r8();
-      if(label === 0xF9) {
-        r8(); // block size = 4
-        const epk   = r8();
-        const delay = r16(); // centiseconds (0 = unspecified)
-        const tIdx  = r8();
-        r8(); // terminator
-        gce = {
-          disposal: (epk>>2)&7,
-          // ★ delay=0이면 100ms(10cs) 기본값 적용 (브라우저 표준)
-          delayMs: delay > 0 ? delay*10 : 100,
-          transparent: (epk&1) ? tIdx : -1
+    if(block===0x21){
+      const label=r8();
+      if(label===0xF9){
+        r8();
+        const epk=r8();
+        const delay=r16();
+        const tIdx=r8();
+        r8();
+        gce={
+          disposal:(epk>>2)&7,
+          delayMs:delay>0?delay*10:100, // delay=0 → 100ms 기본값
+          transparent:(epk&1)?tIdx:-1
         };
-      } else {
-        let sz; while((sz=r8())!==0){ pos+=sz; }
+      }else{
+        let sz;while((sz=r8())!==0){pos+=sz;}
       }
       continue;
     }
 
-    if(block === 0x2C) {
-      const ix=r16(), iy=r16(), iw=r16(), ih=r16();
-      const ipk = r8();
-      const hasLCT = (ipk>>7)&1;
-      const interlaced = (ipk>>6)&1;
-      let ct = globalCT;
-      if(hasLCT){
-        const lctSz = 3*(2<<(ipk&7));
-        ct = data.slice(pos, pos+lctSz);
-        pos += lctSz;
-      }
+    if(block===0x2C){
+      const ix=r16(),iy=r16(),iw=r16(),ih=r16();
+      const ipk=r8();
+      const hasLCT=(ipk>>7)&1;
+      const interlaced=(ipk>>6)&1;
+      let ct=globalCT;
+      if(hasLCT){const lctSz=3*(2<<(ipk&7));ct=data.slice(pos,pos+lctSz);pos+=lctSz;}
 
-      // LZW compressed data
-      const minCode = r8();
-      const compressed = [];
+      const minCode=r8();
+      const compressed=[];
       let sz;
-      while((sz=r8())!==0){ for(let i=0;i<sz;i++) compressed.push(data[pos++]); }
+      while((sz=r8())!==0){for(let i=0;i<sz;i++)compressed.push(data[pos++]);}
 
-      const pixels = lzwDecode(minCode, compressed);
+      const pixels=lzwDecode(minCode,compressed);
 
-      // Disposal 처리
-      if(gce && gce.disposal===3){
-        ctx.clearRect(ix,iy,iw,ih);
-        ctx.drawImage(pv,0,0);
+      if(gce&&gce.disposal===3){ctx.clearRect(ix,iy,iw,ih);ctx.drawImage(pv,0,0);}
+      pctx.clearRect(0,0,W,H);pctx.drawImage(cv,0,0);
+      if(gce&&gce.disposal===2)ctx.clearRect(ix,iy,iw,ih);
+
+      const imgData=ctx.getImageData(ix,iy,iw,ih);
+      const d=imgData.data;
+      const tIdx=gce?gce.transparent:-1;
+      const px=interlaced?deinterlace(pixels,iw,ih):pixels;
+
+      for(let i=0;i<iw*ih;i++){
+        const ci=px[i];
+        if(ci===tIdx)continue;
+        const di=i*4,ci3=ci*3;
+        if(ct&&ci3+2<ct.length){d[di]=ct[ci3];d[di+1]=ct[ci3+1];d[di+2]=ct[ci3+2];d[di+3]=255;}
       }
-      // 현재 상태 백업
-      pctx.clearRect(0,0,W,H);
-      pctx.drawImage(cv,0,0);
-      // Disposal 2: 해당 영역 지우기
-      if(gce && gce.disposal===2){
-        ctx.clearRect(ix,iy,iw,ih);
-      }
+      ctx.putImageData(imgData,ix,iy);
 
-      // 픽셀 그리기
-      const imgData = ctx.getImageData(ix,iy,iw,ih);
-      const d = imgData.data;
-      const tIdx = gce ? gce.transparent : -1;
-      const px = interlaced ? deinterlace(pixels,iw,ih) : pixels;
-
-      for(let i=0; i<iw*ih; i++){
-        const ci = px[i];
-        if(ci === tIdx) continue;
-        const di = i*4, ci3 = ci*3;
-        if(ct && ci3+2 < ct.length){
-          d[di]=ct[ci3]; d[di+1]=ct[ci3+1]; d[di+2]=ct[ci3+2]; d[di+3]=255;
-        }
-      }
-      ctx.putImageData(imgData, ix, iy);
-
-      const bitmap  = await createImageBitmap(cv);
-      // ★ delayMs 최소 20ms 보장
-      const delayMs = gce ? Math.max(gce.delayMs, 20) : 100;
-      frames.push({ bitmap, width:W, height:H, delayMs });
-      gce = null;
+      const bitmap=await createImageBitmap(cv);
+      const delayMs=gce?Math.max(gce.delayMs,20):100;
+      frames.push({bitmap,width:W,height:H,delayMs});
+      gce=null;
       continue;
     }
 
-    // 알 수 없는 블록 스킵
-    let sz; while((sz=r8())!==0){ pos+=sz; }
+    let sz;while((sz=r8())!==0){pos+=sz;}
   }
 
-  if(!frames.length) throw new Error('GIF 프레임을 찾지 못했습니다');
+  if(!frames.length)throw new Error('GIF 프레임을 찾지 못했습니다');
   return frames;
 }
 
-function lzwDecode(minCodeSize, compressed){
-  const clearCode = 1<<minCodeSize;
-  const eoi = clearCode+1;
-  let codeSize = minCodeSize+1;
-  let codeMask = (1<<codeSize)-1;
-  let nextCode = eoi+1;
-  const table = [];
-
+function lzwDecode(minCodeSize,compressed){
+  const clearCode=1<<minCodeSize,eoi=clearCode+1;
+  let codeSize=minCodeSize+1,codeMask=(1<<codeSize)-1,nextCode=eoi+1;
+  const table=[];
   function reset(){
     table.length=0;
-    for(let i=0;i<clearCode;i++) table[i]=[i];
-    table[clearCode]=[]; table[eoi]=[];
-    codeSize=minCodeSize+1; codeMask=(1<<codeSize)-1; nextCode=eoi+1;
+    for(let i=0;i<clearCode;i++)table[i]=[i];
+    table[clearCode]=[];table[eoi]=[];
+    codeSize=minCodeSize+1;codeMask=(1<<codeSize)-1;nextCode=eoi+1;
   }
   reset();
-
-  let bits=0, bitBuf=0, bytePos=0;
+  let bits=0,bitBuf=0,bytePos=0;
   function readCode(){
-    while(bits<codeSize && bytePos<compressed.length){ bitBuf|=compressed[bytePos++]<<bits; bits+=8; }
-    const c=bitBuf&codeMask; bitBuf>>=codeSize; bits-=codeSize; return c;
+    while(bits<codeSize&&bytePos<compressed.length){bitBuf|=compressed[bytePos++]<<bits;bits+=8;}
+    const c=bitBuf&codeMask;bitBuf>>=codeSize;bits-=codeSize;return c;
   }
-
-  const out=[]; let prev=null;
+  const out=[];let prev=null;
   while(true){
     const code=readCode();
-    if(code===clearCode){ reset(); prev=null; continue; }
-    if(code===eoi) break;
+    if(code===clearCode){reset();prev=null;continue;}
+    if(code===eoi)break;
     let entry;
-    if(code<nextCode)           entry=table[code];
-    else if(code===nextCode && prev!==null) entry=[...table[prev], table[prev][0]];
+    if(code<nextCode)entry=table[code];
+    else if(code===nextCode&&prev!==null)entry=[...table[prev],table[prev][0]];
     else break;
-    for(const p of entry) out.push(p);
-    if(prev!==null && nextCode<4096){
-      table[nextCode++]=[...table[prev], entry[0]];
-      if(nextCode>codeMask && codeSize<12){ codeSize++; codeMask=(1<<codeSize)-1; }
+    for(const p of entry)out.push(p);
+    if(prev!==null&&nextCode<4096){
+      table[nextCode++]=[...table[prev],entry[0]];
+      if(nextCode>codeMask&&codeSize<12){codeSize++;codeMask=(1<<codeSize)-1;}
     }
     prev=code;
   }
   return out;
 }
 
-function deinterlace(pixels, w, h){
+function deinterlace(pixels,w,h){
   const out=new Array(w*h);
   const passes=[[0,8],[4,8],[2,4],[1,2]];
   let src=0;
-  for(const [start,step] of passes)
+  for(const [start,step]of passes)
     for(let y=start;y<h;y+=step)
-      for(let x=0;x<w;x++) out[y*w+x]=pixels[src++];
+      for(let x=0;x<w;x++)out[y*w+x]=pixels[src++];
   return out;
 }
 
-// ???????????????????????????????????????????????????????
+// ???????????????????????????????????????????????
 // 변환 메인
-// ???????????????????????????????????????????????????????
-btnConvert.addEventListener('click', async()=>{
-  if(!audioFile||!gifBlob) return;
-  btnConvert.disabled=true; btnDl.classList.remove('show'); clearStatus();
-  progWrap.classList.add('show'); progFill.classList.add('running');
+// ???????????????????????????????????????????????
+btnConvert.addEventListener('click',async()=>{
+  if(!audioFile||!gifBlob)return;
+  btnConvert.disabled=true;btnDl.classList.remove('show');clearStatus();
+  progWrap.classList.add('show');progFill.classList.add('running');
   setProgress(0,'준비 중...','GIF 파싱 중...');
-  if(outUrl){ URL.revokeObjectURL(outUrl); outUrl=null; }
+  if(outUrl){URL.revokeObjectURL(outUrl);outUrl=null;}
 
   try{
-    // 1. GIF 파싱
     setProgress(5,'GIF 분석 중...','프레임 추출 중...');
-    const gifFrames = await extractGifFrames(gifBlob);
-    const loopMs = gifFrames.reduce((s,f)=>s+f.delayMs, 0);
-    setProgress(18,'GIF 분석 완료',
-      `${gifFrames.length}프레임 · 루프 ${(loopMs/1000).toFixed(2)}초 · 프레임당 ${gifFrames[0].delayMs}ms`);
+    const gifFrames=await extractGifFrames(gifBlob);
+    const loopMs=gifFrames.reduce((s,f)=>s+f.delayMs,0);
+    setProgress(18,'GIF 분석 완료',`${gifFrames.length}프레임 · 루프 ${(loopMs/1000).toFixed(2)}초`);
 
-    // 2. 오디오 디코딩
     setProgress(22,'오디오 분석 중...','');
-    const audioCtx = new(window.AudioContext||window.webkitAudioContext)();
-    const audioBuffer = await audioCtx.decodeAudioData(await audioFile.arrayBuffer());
+    const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const audioBuffer=await audioCtx.decodeAudioData(await audioFile.arrayBuffer());
     await audioCtx.close();
-    const dur = audioBuffer.duration;
+    const dur=audioBuffer.duration;
     setProgress(32,'오디오 준비 완료',`${dur.toFixed(1)}초 · ${audioBuffer.sampleRate}Hz`);
 
-    // 3. Muxer
-    const {Muxer,ArrayBufferTarget} = Mp4Muxer;
-    const target = new ArrayBufferTarget();
-    const muxer  = new Muxer({
+    const {Muxer,ArrayBufferTarget}=Mp4Muxer;
+    const target=new ArrayBufferTarget();
+    const muxer=new Muxer({
       target,
-      video:{ codec:'avc', width:1920, height:1080 },
-      audio:{ codec:'aac', sampleRate:audioBuffer.sampleRate, numberOfChannels:audioBuffer.numberOfChannels },
+      video:{codec:'avc',width:1920,height:1080},
+      audio:{codec:'aac',sampleRate:audioBuffer.sampleRate,numberOfChannels:audioBuffer.numberOfChannels},
       fastStart:'in-memory',
     });
 
-    // 4. 비디오 인코딩 ? GIF 실제 타이밍 사용
-    const ve = new VideoEncoder({ output:(c,m)=>muxer.addVideoChunk(c,m), error:e=>{throw e;} });
-    ve.configure({ codec:'avc1.640033', width:1920, height:1080, bitrate:2_500_000, framerate:25 });
+    const ve=new VideoEncoder({output:(c,m)=>muxer.addVideoChunk(c,m),error:e=>{throw e;}});
+    ve.configure({codec:'avc1.640033',width:1920,height:1080,bitrate:2_500_000,framerate:25});
 
-    const oc = new OffscreenCanvas(1920,1080);
-    const ox = oc.getContext('2d');
-    let tsUs=0, totalUs=Math.round(dur*1_000_000), gi=0, fi=0;
+    const oc=new OffscreenCanvas(1920,1080);
+    const ox=oc.getContext('2d');
+    let tsUs=0,totalUs=Math.round(dur*1_000_000),gi=0,fi=0;
 
     setProgress(35,'비디오 인코딩 중...','');
-    while(tsUs < totalUs){
-      const gf  = gifFrames[gi % gifFrames.length];
-      const dUs = Math.min(Math.round(gf.delayMs*1000), totalUs-tsUs);
-
-      ox.fillStyle='#000'; ox.fillRect(0,0,1920,1080);
-      const sc = Math.min(1920/gf.width, 1080/gf.height);
-      ox.drawImage(gf.bitmap, (1920-gf.width*sc)/2, (1080-gf.height*sc)/2, gf.width*sc, gf.height*sc);
-
-      const vf = new VideoFrame(oc, {timestamp:tsUs, duration:dUs});
-      ve.encode(vf, {keyFrame: fi%50===0}); vf.close();
-
-      tsUs+=dUs; gi++; fi++;
+    while(tsUs<totalUs){
+      const gf=gifFrames[gi%gifFrames.length];
+      const dUs=Math.min(Math.round(gf.delayMs*1000),totalUs-tsUs);
+      ox.fillStyle='#000';ox.fillRect(0,0,1920,1080);
+      const sc=Math.min(1920/gf.width,1080/gf.height);
+      ox.drawImage(gf.bitmap,(1920-gf.width*sc)/2,(1080-gf.height*sc)/2,gf.width*sc,gf.height*sc);
+      const vf=new VideoFrame(oc,{timestamp:tsUs,duration:dUs});
+      ve.encode(vf,{keyFrame:fi%50===0});vf.close();
+      tsUs+=dUs;gi++;fi++;
       if(fi%10===0){
-        setProgress(35+(tsUs/totalUs)*38,'비디오 인코딩 중...',
-          `${(tsUs/1e6).toFixed(1)}s / ${dur.toFixed(1)}s  (프레임 ${fi})`);
+        setProgress(35+(tsUs/totalUs)*38,'비디오 인코딩 중...',`${(tsUs/1e6).toFixed(1)}s / ${dur.toFixed(1)}s`);
         await new Promise(r=>setTimeout(r,0));
       }
     }
-    await ve.flush(); ve.close();
+    await ve.flush();ve.close();
     setProgress(75,'비디오 완료','오디오 인코딩 중...');
 
-    // 5. 오디오 인코딩
-    const sr=audioBuffer.sampleRate, ch=audioBuffer.numberOfChannels;
-    const ae = new AudioEncoder({ output:(c,m)=>muxer.addAudioChunk(c,m), error:e=>{throw e;} });
-    ae.configure({ codec:'mp4a.40.2', sampleRate:sr, numberOfChannels:ch, bitrate:192_000 });
+    const sr=audioBuffer.sampleRate,ch=audioBuffer.numberOfChannels;
+    const ae=new AudioEncoder({output:(c,m)=>muxer.addAudioChunk(c,m),error:e=>{throw e;}});
+    ae.configure({codec:'mp4a.40.2',sampleRate:sr,numberOfChannels:ch,bitrate:192_000});
     let off=0;
     while(off<audioBuffer.length){
-      const len=Math.min(4096, audioBuffer.length-off);
+      const len=Math.min(4096,audioBuffer.length-off);
       const il=new Float32Array(len*ch);
-      for(let s=0;s<len;s++) for(let c=0;c<ch;c++) il[s*ch+c]=audioBuffer.getChannelData(c)[off+s];
+      for(let s=0;s<len;s++)for(let c=0;c<ch;c++)il[s*ch+c]=audioBuffer.getChannelData(c)[off+s];
       const ad=new AudioData({format:'f32',sampleRate:sr,numberOfChannels:ch,numberOfFrames:len,timestamp:Math.round(off/sr*1e6),data:il});
-      ae.encode(ad); ad.close(); off+=4096;
+      ae.encode(ad);ad.close();off+=4096;
       if(off%(4096*15)<4096){
-        setProgress(75+(off/audioBuffer.length)*15,'오디오 인코딩 중...',
-          `${(off/sr).toFixed(1)}s / ${dur.toFixed(1)}s`);
+        setProgress(75+(off/audioBuffer.length)*15,'오디오 인코딩 중...',`${(off/sr).toFixed(1)}s / ${dur.toFixed(1)}s`);
         await new Promise(r=>setTimeout(r,0));
       }
     }
-    await ae.flush(); ae.close();
+    await ae.flush();ae.close();
     setProgress(92,'MP4 패키징 중...','');
 
-    // 6. Finalize
     muxer.finalize();
-    const blob = new Blob([target.buffer], {type:'video/mp4'});
-    outUrl = URL.createObjectURL(blob);
+    const blob=new Blob([target.buffer],{type:'video/mp4'});
+    outUrl=URL.createObjectURL(blob);
     progFill.classList.remove('running');
     setProgress(100,'변환 완료!',`출력 크기: ${fmt(blob.size)}`);
 
-    const name = audioFile.name.replace(/\.[^.]+$/,'')+'_video.mp4';
-    btnDl.href=outUrl; btnDl.download=name;
-    btnDl.textContent='? '+name+' 다운로드';
+    const name=audioFile.name.replace(/\.[^.]+$/,'')+'_video.mp4';
+    btnDl.href=outUrl;btnDl.download=name;
+    // 다운로드 버튼 텍스트 업데이트 (SVG 아이콘 유지)
+    btnDl.querySelector('svg').nextSibling
+      ? btnDl.childNodes[btnDl.childNodes.length-1].textContent=' '+name+' 다운로드'
+      : null;
+    btnDl.lastChild.textContent=' '+name+' 다운로드';
     btnDl.classList.add('show');
-    setStatus('? 변환 완료! 아래 버튼으로 다운로드하세요.','ok');
+    setStatus('변환 완료! 아래 버튼으로 다운로드하세요.','ok');
 
   }catch(err){
     console.error(err);
     progFill.classList.remove('running');
-    setStatus('? 오류: '+err.message,'err');
-    setProgress(0,'변환 실패', err.message.slice(0,100));
+    setStatus('오류: '+err.message,'err');
+    setProgress(0,'변환 실패',err.message.slice(0,100));
   }finally{
-    btnConvert.disabled=false; updateBtn();
+    btnConvert.disabled=false;updateBtn();
   }
 });
 </script>
