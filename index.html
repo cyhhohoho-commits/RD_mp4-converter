@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audio → MP4 Converter</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+:root {
+  --blue:#1a6fd4; --blue-lt:#3d8ef0; --blue-bg:#e8f0fb; --blue-line:#c2d6f7;
+  --green:#28a264; --red:#d94040;
+  --text:#1c2a3a; --text-mid:#4a5f78; --text-dim:#8fa3b8;
+  --bg:#f0f4fa; --card:#ffffff; --border:#d8e4f2; --track:#dce8f7;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;}
+.card{background:var(--card);border-radius:16px;box-shadow:0 4px 24px rgba(26,111,212,.10),0 1px 4px rgba(0,0,0,.06);width:100%;max-width:520px;overflow:hidden;}
+.top-bar{background:var(--blue);padding:22px 32px 20px;display:flex;align-items:center;gap:14px;}
+.top-icon{width:42px;height:42px;background:rgba(255,255,255,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.top-bar h1{color:#fff;font-size:18px;font-weight:700;line-height:1.2;}
+.top-bar p{color:rgba(255,255,255,.75);font-size:12px;margin-top:2px;font-weight:300;}
+.body{padding:28px 32px 32px;}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+.chip{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-line);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;}
+.sec-lbl{font-size:12px;font-weight:700;color:var(--text-mid);margin-bottom:8px;}
+.gif-row{display:flex;align-items:center;gap:8px;background:var(--blue-bg);border:1px solid var(--blue-line);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--text-mid);}
+.gif-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 2px rgba(40,162,100,.2);}
+.gif-dot.warn{background:#e88a2a;box-shadow:0 0 0 2px rgba(232,138,42,.2);}
+.gif-fname{font-weight:700;color:var(--text);}
+.gif-st{margin-left:auto;font-size:11px;}
+.gif-manual{display:none;background:#fff8f0;border:1px solid #f5c98a;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:12px;}
+.gif-manual.show{display:block;}
+.gif-manual p{color:#8a5200;margin-bottom:10px;font-weight:500;}
+.gif-manual label{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;}
+.gif-manual label:hover{background:var(--blue-lt);}
+.gif-manual input{display:none;}
+.drop-zone{border:2px dashed var(--border);border-radius:10px;padding:32px 16px;text-align:center;cursor:pointer;position:relative;transition:all .2s;margin-bottom:14px;background:var(--bg);}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.drop-zone:hover,.drop-zone.over{border-color:var(--blue);background:var(--blue-bg);}
+.drop-zone.has-file{border-color:var(--green);border-style:solid;background:#f0faf5;}
+.drop-icon{font-size:30px;margin-bottom:8px;display:block;}
+.drop-zone h3{font-size:13px;font-weight:600;margin-bottom:4px;}
+.drop-zone p{font-size:11px;color:var(--text-dim);}
+.file-bar{display:none;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:18px;font-size:12px;}
+.file-bar.show{display:flex;}
+.fbn{flex:1;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fbs{color:var(--text-dim);white-space:nowrap;}
+.btn-main{width:100%;padding:14px;background:var(--blue);border:none;border-radius:10px;color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:14px;}
+.btn-main:hover:not(:disabled){background:var(--blue-lt);transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,111,212,.3);}
+.btn-main:disabled{background:#b0c8e8;cursor:not-allowed;transform:none;box-shadow:none;}
+.prog-wrap{display:none;margin-bottom:14px;}
+.prog-wrap.show{display:block;}
+.prog-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;}
+.prog-lbl{color:var(--text-mid);font-weight:500;}
+.prog-pct{color:var(--blue);font-weight:700;}
+.prog-track{height:6px;background:var(--track);border-radius:3px;overflow:hidden;margin-bottom:6px;}
+.prog-fill{height:100%;border-radius:3px;transition:width .35s ease;width:0%;background:linear-gradient(90deg,var(--blue),var(--blue-lt));}
+.prog-fill.running{background:linear-gradient(90deg,var(--blue) 0%,#6ab0ff 50%,var(--blue) 100%);background-size:200% 100%;animation:shimmer 1.4s linear infinite;}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.prog-log{font-size:11px;color:var(--text-dim);min-height:14px;}
+.btn-dl{display:none;width:100%;padding:14px;background:transparent;border:2px solid var(--green);border-radius:10px;color:var(--green);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;margin-bottom:14px;transition:all .2s;}
+.btn-dl:hover{background:var(--green);color:#fff;}
+.btn-dl.show{display:block;}
+.status{display:none;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:500;text-align:center;}
+.status.show{display:block;}
+.status.ok{background:#edfaf4;color:var(--green);border:1px solid #a8dfca;}
+.status.err{background:#fdf0f0;color:var(--red);border:1px solid #f0b8b8;}
+.compat{display:none;background:#fff8e6;border:1px solid #ffd280;border-radius:8px;padding:12px 14px;font-size:12px;color:#7a5500;margin-bottom:16px;}
+.compat.show{display:block;}
+.footer{margin-top:20px;text-align:center;font-size:11px;color:var(--text-dim);}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top-bar">
+    <div class="top-icon">🎵</div>
+    <div>
+      <h1>Audio → MP4 변환기</h1>
+      <p>MP3 / WAV를 풀HD 동영상으로 · 브라우저 로컬 처리</p>
+    </div>
+  </div>
+  <div class="body">
+    <div class="compat" id="compat">⚠ <strong>Chrome 또는 Edge 브라우저를 사용해 주세요.</strong> 현재 브라우저는 지원되지 않습니다.</div>
+    <div class="chips">
+      <span class="chip">📐 1920×1080</span>
+      <span class="chip">🎬 H.264</span>
+      <span class="chip">🔊 AAC 192kbps</span>
+      <span class="chip">🔒 서버 업로드 없음</span>
+    </div>
+    <div class="sec-lbl">배경 이미지</div>
+    <div class="gif-row">
+      <div class="gif-dot" id="gifDot"></div>
+      <span class="gif-fname">음향용이미지.gif</span>
+      <span class="gif-st" id="gifSt">확인 중...</span>
+    </div>
+    <div class="gif-manual" id="gifManual">
+      <p>⚠ 배경 이미지 파일을 찾을 수 없습니다. 직접 업로드해 주세요.</p>
+      <label><input type="file" id="gifInput" accept=".gif,image/gif"> 📂 GIF 파일 선택</label>
+    </div>
+    <div class="sec-lbl">오디오 파일</div>
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="audioInput" accept=".mp3,.wav,audio/mpeg,audio/wav">
+      <span class="drop-icon" id="dropIcon">🎧</span>
+      <h3 id="dropTitle">MP3 또는 WAV 파일을 선택하거나 드래그하세요</h3>
+      <p id="dropSub">지원 형식: .mp3 · .wav</p>
+    </div>
+    <div class="file-bar" id="fileBar">
+      <span>🎵</span>
+      <span class="fbn" id="fbName">—</span>
+      <span class="fbs" id="fbSize">—</span>
+    </div>
+    <button class="btn-main" id="btnConvert" disabled>▶ MP4 변환 시작</button>
+    <div class="prog-wrap" id="progWrap">
+      <div class="prog-head">
+        <span class="prog-lbl" id="progLbl">처리 중...</span>
+        <span class="prog-pct" id="progPct">0%</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-log" id="progLog"></div>
+    </div>
+    <a class="btn-dl" id="btnDl" href="#" download="output.mp4">⬇ MP4 다운로드</a>
+    <div class="status" id="statusMsg"></div>
+  </div>
+</div>
+<div class="footer">모든 처리는 브라우저 내에서 로컬로 이루어집니다 · Chrome 94+ 권장</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.4/build/mp4-muxer.min.js"></script>
+<script>
+if(typeof VideoEncoder==='undefined') document.getElementById('compat').classList.add('show');
+
+const $=id=>document.getElementById(id);
+const gifDot=$('gifDot'),gifSt=$('gifSt'),gifManual=$('gifManual'),gifInput=$('gifInput');
+const dropZone=$('dropZone'),audioInput=$('audioInput');
+const dropIcon=$('dropIcon'),dropTitle=$('dropTitle'),dropSub=$('dropSub');
+const fileBar=$('fileBar'),fbName=$('fbName'),fbSize=$('fbSize');
+const btnConvert=$('btnConvert'),progWrap=$('progWrap');
+const progLbl=$('progLbl'),progPct=$('progPct'),progFill=$('progFill'),progLog=$('progLog');
+const btnDl=$('btnDl'),statusMsg=$('statusMsg');
+
+let audioFile=null, gifBlob=null, outUrl=null;
+
+const fmt=b=>b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB';
+const setStatus=(m,t)=>{statusMsg.textContent=m;statusMsg.className='status show '+t;};
+const clearStatus=()=>{statusMsg.className='status';};
+function setProgress(pct,lbl,log){
+  progFill.style.width=pct+'%';progPct.textContent=Math.round(pct)+'%';
+  if(lbl)progLbl.textContent=lbl;
+  if(log!==undefined)progLog.textContent=log;
+}
+const updateBtn=()=>{btnConvert.disabled=!(audioFile&&gifBlob&&typeof VideoEncoder!=='undefined');};
+
+// GIF 자동 로드
+(async()=>{
+  try{
+    const base=window.location.href.replace(/[^/]*$/,'');
+    const res=await fetch(base+encodeURIComponent('음향용이미지.gif'));
+    if(!res.ok) throw 0;
+    gifBlob=await res.blob();
+    gifDot.className='gif-dot';
+    gifSt.textContent='✓ 자동 로드 완료';gifSt.style.color='var(--green)';
+  }catch{
+    gifDot.className='gif-dot warn';
+    gifSt.textContent='파일 없음 — 수동 업로드 필요';
+    gifManual.classList.add('show');
+  }
+  updateBtn();
+})();
+
+gifInput.addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  gifBlob=f;gifDot.className='gif-dot';
+  gifSt.textContent='✓ '+f.name;gifSt.style.color='var(--green)';
+  gifManual.classList.remove('show');updateBtn();
+});
+
+audioInput.addEventListener('change',e=>{const f=e.target.files[0];if(f)setAudio(f);});
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('over');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('over'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('over');const f=e.dataTransfer.files[0];if(f)setAudio(f);});
+
+function setAudio(f){
+  if(!/\.(mp3|wav)$/i.test(f.name)){setStatus('MP3 또는 WAV 파일만 지원합니다.','err');return;}
+  audioFile=f;
+  dropIcon.textContent='✅';dropTitle.textContent=f.name;dropSub.textContent=fmt(f.size);
+  dropZone.classList.add('has-file');
+  fbName.textContent=f.name;fbSize.textContent=fmt(f.size);
+  fileBar.classList.add('show');clearStatus();btnDl.classList.remove('show');updateBtn();
+}
+
+// ═══════════════════════════════════════════════
+// 순수 JS GIF 파서 (외부 라이브러리 없음)
+// ═══════════════════════════════════════════════
+async function extractGifFrames(blob) {
+  const buf = await blob.arrayBuffer();
+  const data = new Uint8Array(buf);
+  let pos = 0;
+
+  function r8()  { return data[pos++]; }
+  function r16() { const v=data[pos]|(data[pos+1]<<8); pos+=2; return v; }
+  function skip(n){ pos+=n; }
+
+  // Header
+  pos = 6;
+  const W = r16(), H = r16();
+  const packed = r8();
+  const hasGCT = (packed >> 7) & 1;
+  skip(1); // bg color
+  skip(1); // pixel aspect
+  if(hasGCT) skip(3 * (2 << (packed & 7)));
+
+  const frames = [];
+  let gce = null; // graphic control extension
+
+  // Render canvas (composite)
+  const cv  = document.createElement('canvas'); cv.width=W; cv.height=H;
+  const ctx = cv.getContext('2d');
+  const prev= document.createElement('canvas'); prev.width=W; prev.height=H;
+  const pctx= prev.getContext('2d');
+
+  while(pos < data.length) {
+    const block = r8();
+
+    if(block === 0x3B) break; // trailer
+
+    if(block === 0x21) { // extension
+      const label = r8();
+      if(label === 0xF9) { // graphic control
+        skip(1); // block size
+        const epacked = r8();
+        const delay   = r16(); // centiseconds
+        const tIdx    = r8();
+        skip(1); // terminator
+        gce = {
+          disposal: (epacked >> 2) & 7,
+          transparent: (epacked & 1) ? tIdx : -1,
+          delay: delay
+        };
+      } else {
+        // skip other extensions
+        let sz;
+        while((sz=r8()) !== 0) skip(sz);
+      }
+      continue;
+    }
+
+    if(block === 0x2C) { // image descriptor
+      const ix=r16(), iy=r16(), iw=r16(), ih=r16();
+      const ipacked=r8();
+      const hasLCT=(ipacked>>7)&1;
+      const interlace=(ipacked>>6)&1;
+      let lct=null;
+      if(hasLCT){
+        const lctSize=2<<(ipacked&7);
+        lct=data.slice(pos,pos+lctSize*3);
+        skip(lctSize*3);
+      }
+      // build color table
+      let ct=lct;
+      if(!ct){
+        // rebuild global color table
+        let p2=6;
+        const gp2=data[p2]|(data[p2+1]<<8); p2+=2;
+        const gp3=data[p2]; p2++;
+        const ghGCT=(gp3>>7)&1;
+        p2+=2;
+        if(ghGCT){ ct=data.slice(p2,p2+3*(2<<(gp3&7))); }
+      }
+
+      // LZW decompress
+      const minCode=r8();
+      let compressed=[];
+      let sz;
+      while((sz=r8())!==0){ for(let i=0;i<sz;i++) compressed.push(data[pos++]); }
+      const pixels=lzwDecode(minCode,compressed);
+
+      // Handle disposal before drawing
+      if(gce&&gce.disposal===3){ ctx.clearRect(ix,iy,iw,ih); ctx.drawImage(prev,0,0); }
+      pctx.clearRect(0,0,W,H); pctx.drawImage(cv,0,0);
+      if(gce&&gce.disposal===2){ ctx.clearRect(ix,iy,iw,ih); }
+
+      // Render pixels
+      const imgData=ctx.getImageData(ix,iy,iw,ih);
+      const d=imgData.data;
+      const transparentIdx=gce?gce.transparent:-1;
+
+      if(interlace){
+        const rows=deinterlace(pixels,iw,ih);
+        for(let y=0;y<ih;y++){
+          for(let x=0;x<iw;x++){
+            const ci=rows[y*iw+x];
+            if(ci===transparentIdx) continue;
+            const di=(y*iw+x)*4;
+            const ci3=ci*3;
+            if(ct){ d[di]=ct[ci3];d[di+1]=ct[ci3+1];d[di+2]=ct[ci3+2];d[di+3]=255; }
+          }
+        }
+      } else {
+        for(let i=0;i<pixels.length;i++){
+          const ci=pixels[i];
+          if(ci===transparentIdx) continue;
+          const di=i*4, ci3=ci*3;
+          if(ct){ d[di]=ct[ci3];d[di+1]=ct[ci3+1];d[di+2]=ct[ci3+2];d[di+3]=255; }
+        }
+      }
+      ctx.putImageData(imgData,ix,iy);
+
+      const bitmap=await createImageBitmap(cv);
+      const delayMs=gce&&gce.delay>0?gce.delay*10:100;
+      frames.push({bitmap,width:W,height:H,delayMs:Math.max(delayMs,20)});
+      gce=null;
+      continue;
+    }
+
+    // unknown block — skip sub-blocks
+    let sz;
+    while((sz=r8())!==0) skip(sz);
+  }
+
+  if(!frames.length) throw new Error('GIF에서 프레임을 찾지 못했습니다');
+  return frames;
+}
+
+function lzwDecode(minCodeSize, compressed) {
+  const clearCode = 1 << minCodeSize;
+  const eoi       = clearCode + 1;
+  let codeSize    = minCodeSize + 1;
+  let codeMask    = (1 << codeSize) - 1;
+  let nextCode    = eoi + 1;
+
+  const table = [];
+  function reset() {
+    table.length = 0;
+    for(let i=0;i<clearCode;i++) table[i]=[i];
+    table[clearCode]=[];table[eoi]=[];
+    codeSize=minCodeSize+1;codeMask=(1<<codeSize)-1;nextCode=eoi+1;
+  }
+  reset();
+
+  let bits=0, bitBuf=0, bytePos=0;
+  function readCode(){
+    while(bits<codeSize&&bytePos<compressed.length){ bitBuf|=compressed[bytePos++]<<bits; bits+=8; }
+    const c=bitBuf&codeMask; bitBuf>>=codeSize; bits-=codeSize; return c;
+  }
+
+  const out=[];
+  let prev=null;
+  while(true){
+    const code=readCode();
+    if(code===clearCode){ reset(); prev=null; continue; }
+    if(code===eoi) break;
+    let entry;
+    if(code<nextCode){
+      entry=table[code];
+    } else if(code===nextCode&&prev!==null){
+      entry=[...table[prev],table[prev][0]];
+    } else break;
+    for(const p of entry) out.push(p);
+    if(prev!==null&&nextCode<4096){
+      table[nextCode++]=[...table[prev],entry[0]];
+      if(nextCode>codeMask&&codeSize<12){ codeSize++; codeMask=(1<<codeSize)-1; }
+    }
+    prev=code;
+  }
+  return out;
+}
+
+function deinterlace(pixels, w, h) {
+  const out = new Array(w*h);
+  const passes = [[0,8],[4,8],[2,4],[1,2]];
+  let src=0;
+  for(const [start,step] of passes)
+    for(let y=start;y<h;y+=step)
+      for(let x=0;x<w;x++)
+        out[y*w+x]=pixels[src++];
+  return out;
+}
+
+// ═══════════════════════════════════════════════
+// 변환 메인
+// ═══════════════════════════════════════════════
+btnConvert.addEventListener('click',async()=>{
+  if(!audioFile||!gifBlob) return;
+  btnConvert.disabled=true;btnDl.classList.remove('show');clearStatus();
+  progWrap.classList.add('show');progFill.classList.add('running');
+  setProgress(0,'준비 중...','GIF 파싱 중...');
+  if(outUrl){URL.revokeObjectURL(outUrl);outUrl=null;}
+
+  try{
+    // 1. GIF 파싱
+    setProgress(5,'GIF 분석 중...','애니메이션 프레임 추출 중...');
+    const gifFrames=await extractGifFrames(gifBlob);
+    const loopMs=gifFrames.reduce((s,f)=>s+f.delayMs,0);
+    setProgress(18,'GIF 분석 완료',`${gifFrames.length}프레임 · 루프 ${(loopMs/1000).toFixed(2)}초`);
+
+    // 2. 오디오 디코딩
+    setProgress(22,'오디오 분석 중...','');
+    const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const audioBuffer=await audioCtx.decodeAudioData(await audioFile.arrayBuffer());
+    await audioCtx.close();
+    const dur=audioBuffer.duration;
+    setProgress(32,'오디오 준비 완료',`${dur.toFixed(1)}초 · ${audioBuffer.sampleRate}Hz`);
+
+    // 3. Muxer
+    const {Muxer,ArrayBufferTarget}=Mp4Muxer;
+    const target=new ArrayBufferTarget();
+    const muxer=new Muxer({
+      target,
+      video:{codec:'avc',width:1920,height:1080},
+      audio:{codec:'aac',sampleRate:audioBuffer.sampleRate,numberOfChannels:audioBuffer.numberOfChannels},
+      fastStart:'in-memory',
+    });
+
+    // 4. 비디오 인코딩 — GIF 실제 타이밍
+    const ve=new VideoEncoder({output:(c,m)=>muxer.addVideoChunk(c,m),error:e=>{throw e;}});
+    ve.configure({codec:'avc1.640033',width:1920,height:1080,bitrate:2_500_000,framerate:25});
+
+    const oc=new OffscreenCanvas(1920,1080);
+    const ox=oc.getContext('2d');
+    let tsUs=0,totalUs=Math.round(dur*1_000_000),gi=0,fi=0;
+
+    setProgress(35,'비디오 인코딩 중...','');
+    while(tsUs<totalUs){
+      const gf=gifFrames[gi%gifFrames.length];
+      const dUs=Math.min(Math.round(gf.delayMs*1000),totalUs-tsUs);
+      ox.fillStyle='#000';ox.fillRect(0,0,1920,1080);
+      const sc=Math.min(1920/gf.width,1080/gf.height);
+      ox.drawImage(gf.bitmap,(1920-gf.width*sc)/2,(1080-gf.height*sc)/2,gf.width*sc,gf.height*sc);
+      const vf=new VideoFrame(oc,{timestamp:tsUs,duration:dUs});
+      ve.encode(vf,{keyFrame:fi%50===0});vf.close();
+      tsUs+=dUs;gi++;fi++;
+      if(fi%15===0){
+        setProgress(35+(tsUs/totalUs)*38,'비디오 인코딩 중...',`${(tsUs/1e6).toFixed(1)}s / ${dur.toFixed(1)}s`);
+        await new Promise(r=>setTimeout(r,0));
+      }
+    }
+    await ve.flush();ve.close();
+    setProgress(75,'비디오 완료','오디오 인코딩 중...');
+
+    // 5. 오디오 인코딩
+    const sr=audioBuffer.sampleRate,ch=audioBuffer.numberOfChannels;
+    const ae=new AudioEncoder({output:(c,m)=>muxer.addAudioChunk(c,m),error:e=>{throw e;}});
+    ae.configure({codec:'mp4a.40.2',sampleRate:sr,numberOfChannels:ch,bitrate:192_000});
+    let off=0;
+    while(off<audioBuffer.length){
+      const len=Math.min(4096,audioBuffer.length-off);
+      const il=new Float32Array(len*ch);
+      for(let s=0;s<len;s++) for(let c=0;c<ch;c++) il[s*ch+c]=audioBuffer.getChannelData(c)[off+s];
+      const ad=new AudioData({format:'f32',sampleRate:sr,numberOfChannels:ch,numberOfFrames:len,timestamp:Math.round(off/sr*1e6),data:il});
+      ae.encode(ad);ad.close();off+=4096;
+      if(off%(4096*15)<4096){
+        setProgress(75+(off/audioBuffer.length)*15,'오디오 인코딩 중...',`${(off/sr).toFixed(1)}s / ${dur.toFixed(1)}s`);
+        await new Promise(r=>setTimeout(r,0));
+      }
+    }
+    await ae.flush();ae.close();
+    setProgress(92,'MP4 패키징 중...','');
+
+    // 6. Finalize
+    muxer.finalize();
+    const blob=new Blob([target.buffer],{type:'video/mp4'});
+    outUrl=URL.createObjectURL(blob);
+    progFill.classList.remove('running');
+    setProgress(100,'변환 완료!',`출력 크기: ${fmt(blob.size)}`);
+
+    const name=audioFile.name.replace(/\.[^.]+$/,'')+'_video.mp4';
+    btnDl.href=outUrl;btnDl.download=name;
+    btnDl.textContent='⬇ '+name+' 다운로드';
+    btnDl.classList.add('show');
+    setStatus('✅ 변환 완료! 아래 버튼으로 다운로드하세요.','ok');
+
+  }catch(err){
+    console.error(err);
+    progFill.classList.remove('running');
+    setStatus('❌ 오류: '+err.message,'err');
+    setProgress(0,'변환 실패',err.message.slice(0,100));
+  }finally{
+    btnConvert.disabled=false;updateBtn();
+  }
+});
+</script>
+</body>
+</html>
